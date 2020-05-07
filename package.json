@@ -1,0 +1,19 @@
+{
+  "name": "@longlost/webgl-filter",
+  "version": "1.0.0",
+  "description": "A port of the WebGLImageFilter library. This version modernizes the original source code to esNext and es6 modules.",
+  "main": "webgl-filter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/longlost/webgl-filter.git"
+  },
+  "author": "Longlost Dev longlostdev@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/longlost/webgl-filter/issues"
+  },
+  "homepage": "https://github.com/longlost/webgl-filter#readme"
+}
