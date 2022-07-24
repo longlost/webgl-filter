@@ -51,6 +51,7 @@ const SHADER_FRAGMENT_IDENTITY = [
 
 
 const createFramebufferTexture = (gl, width, height) => {
+
 	const fbo = gl.createFramebuffer();
 	gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
 
@@ -77,7 +78,7 @@ const createFramebufferTexture = (gl, width, height) => {
 
 const imageFilter = (params = {}) => {
 	
-	const	canvas = params.canvas || document.createElement('canvas');
+	const	canvas = params.canvas 							|| document.createElement('canvas');
 	const gl 		 = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
 	if (!gl) {
@@ -99,14 +100,15 @@ const imageFilter = (params = {}) => {
 	const shaderProgramCache = {};	
 	
 	const getTempFramebuffer = index => {
-		tempFramebuffers[index] = 
-			tempFramebuffers[index] || 
-			createFramebufferTexture(gl, width, height);
+
+		tempFramebuffers[index] = tempFramebuffers[index] || 
+															createFramebufferTexture(gl, width, height);
 
 		return tempFramebuffers[index];
 	};
 
 	const draw = flags => {
+
 		let source = null; 
 		let target = null;
 		let flipY  = false;
@@ -215,32 +217,52 @@ const imageFilter = (params = {}) => {
 
 	
 	const addFilter = (name, ...args) => {
+
 		const func = filters[name];
 
 		filterChain.push({func, args});
 	};
 
+
 	const reset = () => {
+
 		filterChain = [];
 	};
-	
+
+
+	let applied = false;
+
+
 	const apply = image => {
+
 		resize(image.width, image.height);
 
 		drawCount = 0;
 
 		// Create the texture for the input image
-		sourceTexture = gl.createTexture();
+		if (!sourceTexture) {			
+			sourceTexture = gl.createTexture();
+		}
 
 		gl.bindTexture(gl.TEXTURE_2D, sourceTexture);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); 
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+
+		if (!applied) {
+
+			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+			
+			applied = true;
+		} 
+		else {
+			gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, image);
+		}
 
 		// No filters? Just draw
 		if (filterChain.length === 0) {
+
 			compileShader(SHADER_FRAGMENT_IDENTITY);
 
 			draw();
@@ -251,6 +273,7 @@ const imageFilter = (params = {}) => {
 		const count = filterChain.length - 1;
 
 		filterChain.forEach((filter, index) => {
+
 			lastInChain = (index === count);
 
 			const {func, args} = filter;

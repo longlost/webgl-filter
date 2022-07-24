@@ -1,5 +1,6 @@
 
 const collect = (source, prefix, collection) => {
+
 	const r = new RegExp(`\\b${prefix} \\w+ (\\w+)`, 'ig');
 	
 	source.replace(r, (match, name) => {
@@ -11,6 +12,7 @@ const collect = (source, prefix, collection) => {
 
 
 const compile = (gl, source, type) => {
+	
 	const shader = gl.createShader(type);
 
 	gl.shaderSource(shader, source);

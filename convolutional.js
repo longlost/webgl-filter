@@ -34,6 +34,7 @@ const SHADER = [
 export default (compileShader, gl, draw) => {
 
 	const convolution = (width, height, matrix) => {
+
 		const m = new Float32Array(matrix);
 		const pixelSizeX = 1 / width;
 		const pixelSizeY = 1 / height;
@@ -48,6 +49,7 @@ export default (compileShader, gl, draw) => {
 
 
 	const detectEdges = (width, height) => {
+
 		convolution(width, height, [
 			0, 1, 0,
 			1, -4, 1,
@@ -56,6 +58,7 @@ export default (compileShader, gl, draw) => {
 	};
 
 	const emboss = (width, height, size = 1) => {
+
 		convolution(width, height, [
 			-2 * size, -1 * size, 0,
 			-1 * size,  1, 				1 * size,
@@ -64,6 +67,7 @@ export default (compileShader, gl, draw) => {
 	};
 
 	const sharpen = (width, height, amount = 1) => {
+
 		convolution(width, height, [
 			0, 					-1 * amount, 			0,
 			-1 * amount, 1 + 4 * amount, -1 * amount,
@@ -72,6 +76,7 @@ export default (compileShader, gl, draw) => {
 	};
 
 	const sobelX = (width, height) => {
+
 		convolution(width, height, [
 			-1, 0, 1,
 			-2, 0, 2,
@@ -80,6 +85,7 @@ export default (compileShader, gl, draw) => {
 	};
 
 	const sobelY = (width, height) => {
+		
 		convolution(width, height, [
 			-1, -2, -1,
 			 0,  0,  0,
