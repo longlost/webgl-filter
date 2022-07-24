@@ -33,10 +33,11 @@ const SHADER = [
 export default (compileShader, gl, draw) => {
 
 	const blur = (width, height, radius = 0) => {
-		var blurSizeX = (radius / 7) / width;
-		var blurSizeY = (radius / 7) / height;
 
-		var program = compileShader(SHADER);
+		const blurSizeX = (radius / 7) / width;
+		const blurSizeY = (radius / 7) / height;
+
+		const program = compileShader(SHADER);
 
 		// Vertical
 		gl.uniform2f(program.uniform.px, 0, blurSizeY);
