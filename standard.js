@@ -161,7 +161,9 @@ export default (compileShader, gl, draw) => {
 	return {
 		brightness,
 		brownie,
-		colorMatrix,
+		colorMatrix: (w, h, matrix) => {
+				colorMatrix(matrix);
+		},
 		contrast,
 		desaturate,
 		desaturateLuminance,
