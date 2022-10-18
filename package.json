@@ -1,6 +1,6 @@
 {
   "name": "@longlost/webgl-filter",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A port of the WebGLImageFilter library. This version modernizes the original source code to esNext and es6 modules.",
   "main": "webgl-filter.js",
   "scripts": {
