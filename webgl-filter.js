@@ -20,6 +20,7 @@ import webGLProgram  from './program.js';
 import standard 		 from './standard.js';
 import convolutional from './convolutional.js';
 import blur 				 from './blur.js';
+import pixelate 		 from './pixelate.js';
 
 
 const DRAW_INTERMEDIATE = 1;
@@ -82,7 +83,7 @@ const imageFilter = (params = {}) => {
 	const gl 		 = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
 
 	if (!gl) {
-		throw `Couldn't get WebGL context`;
+		throw `Couldn't get WebGL context.`;
 	}
 
 	let drawCount 							= 0;
@@ -161,7 +162,7 @@ const imageFilter = (params = {}) => {
 			return currentProgram;
 		}
 
-		// Compile shaders
+		// Compile shaders.
 		currentProgram = webGLProgram(gl, SHADER_VERTEX_IDENTITY, fragmentSource);
 		
 		gl.enableVertexAttribArray(currentProgram.attribute.pos);
@@ -197,8 +198,8 @@ const imageFilter = (params = {}) => {
 			gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 			gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
-			// Note sure if this is a good idea; at least it makes texture loading
-			// in Ejecta instant.
+			// Note sure if this is a good idea; at least 
+			// it makes texture loading in Ejecta instant.
 			gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
 		}
 
@@ -212,7 +213,8 @@ const imageFilter = (params = {}) => {
 	const filters = {
 		...standard(compileShader, gl, draw),
 		...convolutional(compileShader, gl, draw),
-		...blur(compileShader, gl, draw)
+		...blur(compileShader, gl, draw),
+		...pixelate(compileShader, gl, draw)
 	};
 
 	
@@ -239,7 +241,7 @@ const imageFilter = (params = {}) => {
 
 		drawCount = 0;
 
-		// Create the texture for the input image
+		// Create the texture for the input image.
 		if (!sourceTexture) {			
 			sourceTexture = gl.createTexture();
 		}
@@ -260,7 +262,7 @@ const imageFilter = (params = {}) => {
 			gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, gl.RGBA, gl.UNSIGNED_BYTE, image);
 		}
 
-		// No filters? Just draw
+		// No filters? Just draw.
 		if (filterChain.length === 0) {
 
 			compileShader(SHADER_FRAGMENT_IDENTITY);
